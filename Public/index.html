@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Generación de Cupones</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Generar Cupón</h3>
+        </div>
+        <div class="card-body">
+          <form id="couponForm">
+            <div class="mb-3">
+              <label for="customerName" class="form-label">Nombre del Cliente</label>
+              <input type="text" class="form-control" id="customerName" required>
+            </div>
+            <div class="mb-3">
+              <label for="customerId" class="form-label">Número de Cédula</label>
+              <input type="text" class="form-control" id="customerId" required>
+            </div>
+            <div class="mb-3">
+              <label for="customerEmail" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="customerEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="logoUpload" class="form-label">Logo (opcional)</label>
+              <input type="file" class="form-control" id="logoUpload" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Generar Cupón</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Vista Previa del Cupón</h3>
+        </div>
+        <div class="card-body">
+          <div id="couponPreview" class="coupon-preview">
+            <div id="logoPreview" class="text-center mb-3"></div>
+            <h4 class="text-center">CUPÓN DE DESCUENTO</h4>
+            <div id="customerDetails" class="customer-details mt-3">
+              <p><strong>Cliente:</strong> <span id="previewName">-</span></p>
+              <p><strong>Cédula:</strong> <span id="previewId">-</span></p>
+              <p><strong>Email:</strong> <span id="previewEmail">-</span></p>
+            </div>
+            <div class="text-center mt-4">
+              <button id="downloadBtn" class="btn btn-success" disabled>Descargar Cupón</button>
+              <button id="sendEmailBtn" class="btn btn-info" disabled>Enviar por Email</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- App Scripts -->
+<script src="js/config.js"></script>
+<script src="js/repositories/couponRepository.js"></script>
+<script src="js/services/storageService.js"></script>
+<script src="js/services/emailService.js"></script>
+<script src="js/ui/preview.js"></script>
+<script src="js/ui/validation.js"></script>
+<script src="js/serviceFactory.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
