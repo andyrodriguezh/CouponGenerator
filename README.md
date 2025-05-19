@@ -1,6 +1,58 @@
-# Getting Started with Create React App
+# QR Coupon Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Una aplicación web para crear cupones personalizados con códigos QR para descuentos o promociones. La arquitectura permite cambiar entre distintos proveedores de servicios en la nube.
+
+## Arquitectura
+
+Este proyecto utiliza una arquitectura desacoplada que permite cambiar entre proveedores de servicios:
+
+- **Principal (Actual)**: AWS Serverless Architecture
+  - Frontend: React alojado en AWS Amplify
+  - Backend: Funciones Lambda y API Gateway
+  - Base de datos: Amazon DynamoDB
+  - Almacenamiento: Amazon S3 para logos e imágenes
+
+- **Alternativa (Preparada para Migración)**: Firebase
+  - Firestore Database
+  - Firebase Storage
+  - Firebase Hosting
+  - Firebase Functions
+
+## Cómo funciona
+
+Esta aplicación utiliza un patrón de diseño de capa de abstracción de servicios que permite cambiar fácilmente entre diferentes proveedores de servicios en la nube. La estructura del código separa:
+
+1. **Modelos de datos**: Representación de los objetos de negocio
+2. **Servicios**: Operaciones específicas de la aplicación
+3. **Capa de abstracción**: Interfaces genéricas que pueden ser implementadas por diferentes proveedores
+4. **Implementaciones de proveedores**: Código específico para cada proveedor (AWS, Firebase)or
+
+Una aplicación web para crear cupones personalizados con códigos QR para descuentos o promociones. La arquitectura permite cambiar entre distintos proveedores de servicios en la nube.
+
+## Arquitectura
+
+Este proyecto utiliza una arquitectura desacoplada que permite cambiar entre proveedores de servicios:
+
+- **Principal (Actual)**: AWS Serverless Architecture
+  - Frontend: React alojado en AWS Amplify
+  - Backend: Funciones Lambda y API Gateway
+  - Base de datos: Amazon DynamoDB
+  - Almacenamiento: Amazon S3 para logos e imágenes
+
+- **Alternativa (Preparado para Migración)**: Firebase
+  - Firestore Database
+  - Firebase Storage
+  - Firebase Hosting
+  - Firebase Functions
+
+## Características
+
+- Crear cupones personalizados con logos y selección de colores
+- Múltiples tipos de descuento (porcentaje, valor fijo, etc.)
+- Generación de códigos QR para acceso a cupones
+- Opción de redirección a WhatsApp o sitio web
+- Seguimiento de escaneos de cada cupón
+- Listado de todos los cupones emitidos
 
 ## Available Scripts
 
