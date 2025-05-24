@@ -1,24 +1,10 @@
 import React from 'react';
-import {
-  Field,
-  FieldLabel,
-  FieldHelperText,
-  Box,
-  VStack,
-  Heading,
-  Input,
-  HStack,
-  // Button, // Commented out unused import
-  Text
-} from '@chakra-ui/react';
 import { SketchPicker } from 'react-color';
 
 /**
  * Componente para personalizar el diseño del cupón
  */
 const DesignCustomization = ({ coupon, setCoupon }) => {
-  // En Chakra UI v3 ya no se usa useColorModeValue, usamos directamente el color
-  const bgColor = 'white';
   
   // Manejador para cargar el logo
   const handleLogoUpload = async (e) => {
@@ -45,103 +31,97 @@ const DesignCustomization = ({ coupon, setCoupon }) => {
   };
   
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg" bg={bgColor} mb={4}>
-      <Heading size="md" mb={4}>Personalización del diseño</Heading>
+    <div className="p-4 border border-gray-200 rounded-lg bg-white mb-4">
+      <h2 className="text-lg font-medium mb-4">Personalización del diseño</h2>
       
-      <VStack spacing={4} align="stretch">        {/* Carga de logo */}
-        <Field>
-          <FieldLabel>Logo de la empresa</FieldLabel>
-          <Input
+      <div className="flex flex-col space-y-4">
+        {/* Carga de logo */}
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Logo de la empresa
+          </label>
+          <input
             type="file"
             accept="image/*"
             onChange={handleLogoUpload}
-            style={{ paddingTop: '4px' }}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
-          <FieldHelperText>
+          <p className="mt-1 text-xs text-gray-500">
             Imagen PNG o JPG, tamaño recomendado 300x150px
-          </FieldHelperText>
+          </p>
           
           {coupon.logoUrl && (
-            <Box mt={2} p={2} borderWidth="1px" borderRadius="md" width="fit-content">
+            <div className="mt-2 p-2 border border-gray-200 rounded-md inline-block">
               <img 
                 src={coupon.logoUrl} 
                 alt="Logo preview" 
-                style={{ maxHeight: '80px' }} 
+                className="max-h-20"
               />
-            </Box>
+            </div>
           )}
-        </Field>
+        </div>
         
         {/* Selección de colores */}
-        <Box>
-          <Text fontWeight="medium" mb={2}>
+        <div>
+          <p className="font-medium mb-2">
             Colores del cupón
-          </Text>
+          </p>
           
-          <HStack spacing={8} align="flex-start" flexWrap="wrap">
+          <div className="flex flex-wrap gap-8">
             {/* Color primario */}
-            <Box>
-              <Text fontSize="sm" mb={1}>Color primario</Text>
-              <Box mb={2} width="100px">
-                <Box 
-                  height="24px" 
-                  bg={coupon.primaryColor} 
-                  borderRadius="md" 
-                  borderWidth="1px"
-                  borderColor="gray.300"
+            <div>
+              <p className="text-sm mb-1">Color primario</p>
+              <div className="mb-2 w-24">
+                <div 
+                  className="h-6 rounded-md border border-gray-300"
+                  style={{ backgroundColor: coupon.primaryColor }}
                 />
-              </Box>
+              </div>
               <SketchPicker 
                 color={coupon.primaryColor}
                 onChange={(color) => handleColorChange('primaryColor', color)}
                 disableAlpha={true}
                 width="200px"
               />
-            </Box>
+            </div>
             
             {/* Color secundario */}
-            <Box>
-              <Text fontSize="sm" mb={1}>Color secundario</Text>
-              <Box mb={2} width="100px">
-                <Box 
-                  height="24px" 
-                  bg={coupon.secondaryColor} 
-                  borderRadius="md" 
-                  borderWidth="1px"
-                  borderColor="gray.300"
+            <div>
+              <p className="text-sm mb-1">Color secundario</p>
+              <div className="mb-2 w-24">
+                <div 
+                  className="h-6 rounded-md border border-gray-300" 
+                  style={{ backgroundColor: coupon.secondaryColor }}
                 />
-              </Box>
+              </div>
               <SketchPicker 
                 color={coupon.secondaryColor}
                 onChange={(color) => handleColorChange('secondaryColor', color)}
                 disableAlpha={true}
                 width="200px"
               />
-            </Box>
+            </div>
             
             {/* Color de texto */}
-            <Box>
-              <Text fontSize="sm" mb={1}>Color de texto</Text>
-              <Box mb={2} width="100px">
-                <Box 
-                  height="24px" 
-                  bg={coupon.textColor} 
-                  borderRadius="md" 
-                  borderWidth="1px"
-                  borderColor="gray.300"
+            <div>
+              <p className="text-sm mb-1">Color de texto</p>
+              <div className="mb-2 w-24">
+                <div 
+                  className="h-6 rounded-md border border-gray-300"
+                  style={{ backgroundColor: coupon.textColor }}
                 />
-              </Box>
+              </div>
               <SketchPicker 
                 color={coupon.textColor}
                 onChange={(color) => handleColorChange('textColor', color)}
                 disableAlpha={true}
                 width="200px"
               />
-            </Box>
-          </HStack>
-        </Box>
-      </VStack>
-    </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

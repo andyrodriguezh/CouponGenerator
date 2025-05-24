@@ -1,23 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { 
-  Box, 
-  Container, 
-  VStack, 
-  Heading, 
-  Text, 
-  Button, 
-  Image, 
-  Badge,
-  Flex,
-  Center,
-  Spinner,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  Divider,
-  Link
-} from '@chakra-ui/react';
 import { getCouponById, incrementScanCount } from '../services/couponService';
 import { formatDate, isCouponValid } from '../utils/dateUtils';
 import QRGenerator from '../components/QRCode/QRGenerator';
@@ -60,124 +42,131 @@ const CouponRedeem = () => {
   
   if (loading) {
     return (
-      <Center minH="100vh">
-        <Spinner size="xl" />
-      </Center>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
     );
   }
   
-  if (error || !coupon) {    return (      <Container maxW="md" py={10}>
-        <Alert status="error" borderRadius="md">
-          <AlertIcon />
-          <AlertDescription>{error || 'Cupón no encontrado'}</AlertDescription>
-        </Alert>
-      </Container>
+  if (error || !coupon) {
+    return (
+      <div className="container mx-auto max-w-md py-10 px-4">
+        <div className="flex p-4 bg-red-100 border-l-4 border-red-500 rounded-md">
+          <svg className="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-red-700">{error || 'Cupón no encontrado'}</p>
+        </div>
+      </div>
     );
   }
   
   const isValid = isCouponValid(coupon.validFrom, coupon.validUntil);
   
+  // Use custom colors from coupon or fallback to defaults
+  const bgColor = coupon.primaryColor || 'bg-primary-600';
+  const textColor = coupon.textColor || 'text-gray-800';
+  
   return (
-    <Box 
-      minH="100vh" 
-      bg={coupon.primaryColor} 
-      color={coupon.textColor}
-      pt={8}
-      pb={16}
+    <div 
+      className={`min-h-screen pt-8 pb-16 ${bgColor}`}
+      style={{ 
+        backgroundColor: coupon.primaryColor?.startsWith('#') ? coupon.primaryColor : undefined,
+        color: coupon.textColor?.startsWith('#') ? coupon.textColor : undefined
+      }}
     >
-      <Container maxW="md">
-        <VStack 
-          spacing={4} 
-          bg="white" 
-          p={6} 
-          borderRadius="lg" 
-          boxShadow="lg"
+      <div className="container mx-auto max-w-md px-4">
+        <div 
+          className="flex flex-col space-y-4 bg-white p-6 rounded-lg shadow-lg"
         >
           {/* Logo de la empresa */}
           {coupon.logoUrl && (
-            <Box w="full" textAlign="center" mb={2}>
-              <Image 
+            <div className="w-full text-center mb-2">
+              <img 
                 src={coupon.logoUrl} 
                 alt={coupon.businessName} 
-                maxH="100px" 
-                mx="auto"
+                className="max-h-24 mx-auto" 
               />
-            </Box>
+            </div>
           )}
           
           {/* Información del descuento */}
-          <Badge 
-            fontSize="xl" 
-            py={2} 
-            px={4} 
-            colorScheme={isValid ? "green" : "red"}
+          <div 
+            className={`text-xl py-2 px-4 font-bold text-center rounded-full ${
+              isValid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}
           >
             {coupon.discountType === 'percentage'
               ? `${coupon.discountValue}% OFF`
               : coupon.discountValue
             }
-          </Badge>
+          </div>
           
-          <Heading as="h1" size="lg" textAlign="center">
+          <h1 className="text-xl font-bold text-center">
             {coupon.title}
-          </Heading>
+          </h1>
           
-          <Text textAlign="center" fontSize="md">
+          <p className="text-center text-base">
             {coupon.description}
-          </Text>
+          </p>
           
-          <Divider />
+          <hr className="border-t border-gray-200" />
           
           {/* Validez del cupón */}
-          <Flex w="full" justify="space-between" fontSize="sm">
-            <Text>Válido hasta:</Text>
-            <Text fontWeight="bold">{formatDate(coupon.validUntil)}</Text>
-          </Flex>
-            {!isValid && (            <Alert status="error" borderRadius="md" size="sm">
-              <AlertIcon />
-              <AlertDescription>Este cupón ha expirado</AlertDescription>
-            </Alert>
+          <div className="flex w-full justify-between text-sm">
+            <p>Válido hasta:</p>
+            <p className="font-bold">{formatDate(coupon.validUntil)}</p>
+          </div>
+          
+          {!isValid && (
+            <div className="flex p-3 bg-red-100 border-l-4 border-red-500 rounded-md text-sm">
+              <svg className="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-red-700">Este cupón ha expirado</p>
+            </div>
           )}
           
           {/* Términos y condiciones */}
           {coupon.termsAndConditions && (
-            <Box fontSize="xs" w="full" mt={2}>
-              <Text fontWeight="bold">Términos y condiciones:</Text>
-              <Text>{coupon.termsAndConditions}</Text>
-            </Box>
+            <div className="text-xs w-full mt-2">
+              <p className="font-bold">Términos y condiciones:</p>
+              <p>{coupon.termsAndConditions}</p>
+            </div>
           )}
           
           {/* Botón de acción */}
           {coupon.redirectUrl && (
-            <Button
-              w="full"
-              colorScheme="green"
-              isDisabled={!isValid}
-              as={Link}
-              href={coupon.redirectUrl}
-              isExternal
-              mt={4}
+            <a
+              className={`w-full py-2 px-4 text-center font-medium rounded-md mt-4 ${
+                isValid 
+                  ? 'bg-secondary-600 hover:bg-secondary-700 text-white' 
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+              href={isValid ? coupon.redirectUrl : '#'}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {coupon.redirectType === 'whatsapp' ? 'Contactar por WhatsApp' : 'Visitar sitio web'}
-            </Button>
+            </a>
           )}
-        </VStack>
+        </div>
         
         {/* Código QR para compartir */}
-        <Box mt={8} bg="white" p={6} borderRadius="lg" boxShadow="lg">
-          <VStack spacing={4}>
-            <Heading as="h3" size="md" textAlign="center">
+        <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="text-lg font-medium text-center">
               Comparte este cupón
-            </Heading>
+            </h3>
             <QRGenerator
               value={generateCouponUrl(coupon.id)}
               title={coupon.title}
               size={200}
             />
-          </VStack>
-        </Box>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

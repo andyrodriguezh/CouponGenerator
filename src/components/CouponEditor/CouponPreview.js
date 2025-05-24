@@ -1,14 +1,4 @@
 import React from 'react';
-import {
-  Box,
-  VStack,
-  Text,
-  Image,
-  // Badge, // Commented out unused import
-  Divider,
-  Heading,
-  Center
-} from '@chakra-ui/react';
 import { formatDate } from '../../utils/dateUtils';
 
 /**
@@ -18,9 +8,9 @@ const CouponPreview = ({ coupon }) => {
   // Si no hay datos del cupón, mostrar un mensaje
   if (!coupon) {
     return (
-      <Box p={4} borderWidth="1px" borderRadius="lg" bg="gray.50">
-        <Text>Vista previa no disponible</Text>
-      </Box>
+      <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+        <p>Vista previa no disponible</p>
+      </div>
     );
   }
 
@@ -41,114 +31,96 @@ const CouponPreview = ({ coupon }) => {
   };
 
   return (
-    <Box 
-      position="sticky" 
-      top="20px"
-      maxW="100%"
-    >
-      <Heading size="sm" mb={2} ml={2}>Vista previa</Heading>
+    <div className="sticky top-5 max-w-full">
+      <h3 className="text-sm font-medium mb-2 ml-2">Vista previa</h3>
       
       {/* Contenedor del cupón */}
-      <VStack 
-        spacing={3}
-        w="full"
-        borderRadius="lg"
-        overflow="hidden"
-        boxShadow="md"
-        bg="white"
-        justify="space-between"
+      <div 
+        className="flex flex-col w-full rounded-lg overflow-hidden shadow-md bg-white"
         style={{
           background: coupon.primaryColor || '#3182CE',
         }}
       >
         {/* Parte superior del cupón */}
-        <Box 
-          w="full" 
-          bg="white"
-          p={4}
-          borderBottomWidth="2px"
-          borderBottomColor={coupon.secondaryColor || '#EDF2F7'}
-          borderBottomStyle="dashed"
+        <div 
+          className="w-full bg-white p-4"
+          style={{
+            borderBottomWidth: '2px',
+            borderBottomColor: coupon.secondaryColor || '#EDF2F7',
+            borderBottomStyle: 'dashed'
+          }}
         >
           {/* Logo */}
           {coupon.logoUrl && (
-            <Center mb={3}>
-              <Image 
+            <div className="flex justify-center mb-3">
+              <img 
                 src={coupon.logoUrl} 
                 alt={coupon.businessName || 'Logo'} 
-                maxH="60px" 
-                objectFit="contain"
+                className="max-h-[60px] object-contain" 
               />
-            </Center>
+            </div>
           )}
           
           {/* Título del negocio */}
-          <Text 
-            textAlign="center" 
-            fontWeight="bold"
-            color={coupon.textColor || 'gray.800'}
-            fontSize="md"
+          <p 
+            className="text-center font-bold text-base"
+            style={{ color: coupon.textColor || '#1a202c' }}
           >
             {coupon.businessName || 'Nombre del Negocio'}
-          </Text>
+          </p>
           
           {/* Valor del descuento */}
-          <Text 
-            fontSize="3xl" 
-            fontWeight="extrabold" 
-            textAlign="center"
-            color={coupon.textColor || 'gray.800'}
-            my={2}
+          <p 
+            className="text-3xl font-extrabold text-center my-2"
+            style={{ color: coupon.textColor || '#1a202c' }}
           >
             {formatDiscountValue() || '25% OFF'}
-          </Text>
+          </p>
           
           {/* Título del cupón */}
-          <Text 
-            fontSize="lg" 
-            textAlign="center"
-            color={coupon.textColor || 'gray.800'}
-            fontWeight="medium"
+          <p 
+            className="text-lg text-center font-medium"
+            style={{ color: coupon.textColor || '#1a202c' }}
           >
             {coupon.title || 'Título del Cupón'}
-          </Text>
+          </p>
           
           {/* Descripción */}
           {coupon.description && (
-            <Text 
-              fontSize="sm" 
-              textAlign="center" 
-              mt={1}
-              color={coupon.textColor || 'gray.600'}
+            <p 
+              className="text-sm text-center mt-1"
+              style={{ color: coupon.textColor || '#4a5568' }}
             >
               {coupon.description}
-            </Text>
+            </p>
           )}
-        </Box>
+        </div>
         
         {/* Parte inferior del cupón */}
-        <Box 
-          w="full" 
-          p={3}
-          bg={coupon.secondaryColor || '#EDF2F7'}
-          color={coupon.textColor || 'gray.700'}
+        <div 
+          className="w-full p-3"
+          style={{ 
+            backgroundColor: coupon.secondaryColor || '#EDF2F7',
+            color: coupon.textColor || '#4a5568'
+          }}
         >
           {/* Fechas de validez */}
-          <Text fontSize="xs" textAlign="center">
+          <p className="text-xs text-center">
             Válido hasta: {formatDate(coupon.validUntil) || '31/12/2025'}
-          </Text>
-            {/* Términos y condiciones */}
+          </p>
+          
+          {/* Términos y condiciones */}
           {coupon.termsAndConditions && (
             <>
-              <Divider my={2} borderColor={`${coupon.textColor}40` || 'gray.300'} />
-              <Text fontSize="2xs" textAlign="center">
+              <hr className="my-2 border-t" style={{ borderColor: `${coupon.textColor}40` || '#e2e8f0' }} />
+              <p className="text-[10px] text-center">
                 {coupon.termsAndConditions}
-              </Text>
+              </p>
             </>
           )}
-        </Box>
-      </VStack>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

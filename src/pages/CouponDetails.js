@@ -1,27 +1,5 @@
-import React, { useState, useEffect /* useRef */ } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  Box, 
-  Container, 
-  Heading, 
-  Text, 
-  Button, 
-  VStack, 
-  HStack,
-  Badge,  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  Grid,
-  GridItem,  Flex,
-  Divider,
-  Spinner,
-  Center,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  SimpleGrid,
-} from '@chakra-ui/react';
 import { getCouponById } from '../services/couponService';
 import { formatDate, isCouponValid, daysBetween } from '../utils/dateUtils';
 import QRGenerator from '../components/QRCode/QRGenerator';
@@ -63,22 +41,29 @@ const CouponDetails = () => {
   // Si está cargando, mostrar spinner
   if (loading) {
     return (
-      <Center minH="100vh">
-        <Spinner size="xl" />
-      </Center>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
     );
   }
   
   // Si hay error, mostrar alerta
-  if (error || !coupon) {    return (
-      <Container maxW="container.lg" py={10}>        <Alert status="error" borderRadius="md">
-          <AlertIcon />
-          <AlertDescription>{error || 'Cupón no encontrado'}</AlertDescription>
-        </Alert>
-        <Button mt={4} onClick={() => navigate('/')}>
+  if (error || !coupon) {
+    return (
+      <div className="container mx-auto max-w-4xl py-10 px-4">
+        <div className="flex p-4 bg-red-100 border-l-4 border-red-500 rounded-md">
+          <svg className="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-red-700">{error || 'Cupón no encontrado'}</p>
+        </div>
+        <button 
+          onClick={() => navigate('/')}
+          className="mt-4 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md"
+        >
           Volver al inicio
-        </Button>
-      </Container>
+        </button>
+      </div>
     );
   }
   
@@ -87,151 +72,156 @@ const CouponDetails = () => {
   const daysRemaining = isValid ? daysBetween(new Date(), coupon.validUntil) : 0;
   
   return (
-    <Box bg="gray.50" minH="100vh" py={8}>
-      <Container maxW="container.lg">
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto max-w-6xl px-4">
         {/* Cabecera */}
-        <Flex justify="space-between" align="center" mb={6}>
-          <VStack align="flex-start" spacing={1}>
-            <Heading as="h1" size="lg">{coupon.title}</Heading>
-            <Text color="gray.600">{coupon.businessName}</Text>
-          </VStack>
-          <HStack>
-            <Button onClick={() => navigate('/')} variant="outline">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col space-y-1">
+            <h1 className="text-2xl font-bold">{coupon.title}</h1>
+            <p className="text-gray-600">{coupon.businessName}</p>
+          </div>
+          <div className="flex space-x-2">
+            <button 
+              onClick={() => navigate('/')}
+              className="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-md"
+            >
               Volver
-            </Button>
-          </HStack>
-        </Flex>
+            </button>
+          </div>
+        </div>
         
-        <Divider mb={6} />
+        <hr className="mb-6 border-gray-200" />
         
-        <Grid templateColumns={{ base: '1fr', lg: '3fr 2fr' }} gap={6}>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Información principal */}
-          <GridItem>
-            <VStack align="stretch" spacing={6}>
+          <div className="lg:col-span-3">
+            <div className="flex flex-col space-y-6">
               {/* Detalles del cupón */}
-              <Box bg="white" p={6} borderRadius="lg" shadow="md">
-                <Heading size="md" mb={4}>Detalles del cupón</Heading>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h2 className="text-lg font-bold mb-4">Detalles del cupón</h2>
                 
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                  <Box>
-                    <Text fontWeight="bold">Tipo de descuento</Text>
-                    <Text>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-semibold">Tipo de descuento</p>
+                    <p>
                       {coupon.discountType === 'percentage' ? 'Porcentaje' : 
                        coupon.discountType === 'fixed' ? 'Monto fijo' :
                        coupon.discountType === 'buyOneGetOne' ? '2x1' : 
                        'Producto gratis'}
-                    </Text>
-                  </Box>
+                    </p>
+                  </div>
                   
-                  <Box>
-                    <Text fontWeight="bold">Valor</Text>
-                    <Text>
+                  <div>
+                    <p className="font-semibold">Valor</p>
+                    <p>
                       {coupon.discountType === 'percentage' ? `${coupon.discountValue}%` : 
                        coupon.discountType === 'fixed' ? `$${coupon.discountValue}` : 
                        coupon.discountValue}
-                    </Text>
-                  </Box>
+                    </p>
+                  </div>
                   
-                  <Box>
-                    <Text fontWeight="bold">Válido desde</Text>
-                    <Text>{formatDate(coupon.validFrom)}</Text>
-                  </Box>
+                  <div>
+                    <p className="font-semibold">Válido desde</p>
+                    <p>{formatDate(coupon.validFrom)}</p>
+                  </div>
                   
-                  <Box>
-                    <Text fontWeight="bold">Válido hasta</Text>
-                    <Text>{formatDate(coupon.validUntil)}</Text>
-                  </Box>
+                  <div>
+                    <p className="font-semibold">Válido hasta</p>
+                    <p>{formatDate(coupon.validUntil)}</p>
+                  </div>
                   
-                  <Box>
-                    <Text fontWeight="bold">Estado</Text>
-                    <Badge colorScheme={isValid ? "green" : "red"}>
+                  <div>
+                    <p className="font-semibold">Estado</p>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      isValid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
                       {isValid ? 'Activo' : 'Expirado'}
-                    </Badge>
-                  </Box>
+                    </span>
+                  </div>
                   
-                  <Box>
-                    <Text fontWeight="bold">Creado</Text>
-                    <Text>{formatDate(coupon.createdAt)}</Text>
-                  </Box>
-                </SimpleGrid>
+                  <div>
+                    <p className="font-semibold">Creado</p>
+                    <p>{formatDate(coupon.createdAt)}</p>
+                  </div>
+                </div>
                 
                 {coupon.description && (
-                  <Box mt={4}>
-                    <Text fontWeight="bold">Descripción</Text>
-                    <Text>{coupon.description}</Text>
-                  </Box>
+                  <div className="mt-4">
+                    <p className="font-semibold">Descripción</p>
+                    <p>{coupon.description}</p>
+                  </div>
                 )}
                 
                 {coupon.termsAndConditions && (
-                  <Box mt={4}>
-                    <Text fontWeight="bold">Términos y condiciones</Text>
-                    <Text fontSize="sm">{coupon.termsAndConditions}</Text>
-                  </Box>
+                  <div className="mt-4">
+                    <p className="font-semibold">Términos y condiciones</p>
+                    <p className="text-sm">{coupon.termsAndConditions}</p>
+                  </div>
                 )}
                 
                 {coupon.redirectUrl && (
-                  <Box mt={4}>
-                    <Text fontWeight="bold">Redirección</Text>
-                    <Text>
+                  <div className="mt-4">
+                    <p className="font-semibold">Redirección</p>
+                    <p>
                       {coupon.redirectType === 'whatsapp' ? 'WhatsApp: ' : 'Web: '}
                       {coupon.redirectUrl}
-                    </Text>
-                  </Box>
+                    </p>
+                  </div>
                 )}
-              </Box>
+              </div>
               
               {/* Métricas del cupón */}
-              <Box bg="white" p={6} borderRadius="lg" shadow="md">
-                <Heading size="md" mb={4}>Métricas del cupón</Heading>                <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6}>
-                  <Stat>
-                    <StatLabel>Escaneos totales</StatLabel>
-                    <StatNumber>{coupon.scanCount || 0}</StatNumber>
-                    <StatHelpText>Desde la creación</StatHelpText>
-                  </Stat>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h2 className="text-lg font-bold mb-4">Métricas del cupón</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  <div>
+                    <p className="text-sm text-gray-500">Escaneos totales</p>
+                    <p className="text-3xl font-bold">{coupon.scanCount || 0}</p>
+                    <p className="text-xs text-gray-500">Desde la creación</p>
+                  </div>
                   
-                  <Stat>
-                    <StatLabel>Estado</StatLabel>
-                    <StatNumber>{isValid ? 'Activo' : 'Expirado'}</StatNumber>
-                    <StatHelpText>
+                  <div>
+                    <p className="text-sm text-gray-500">Estado</p>
+                    <p className="text-3xl font-bold">{isValid ? 'Activo' : 'Expirado'}</p>
+                    <p className="text-xs text-gray-500">
                       {isValid ? `${daysRemaining} días restantes` : 'Promoción finalizada'}
-                    </StatHelpText>
-                  </Stat>
-                </SimpleGrid>
-              </Box>
-            </VStack>
-          </GridItem>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
           {/* QR y acciones */}
-          <GridItem>
-            <VStack spacing={6}>
-              <Box bg="white" p={6} borderRadius="lg" shadow="md" w="full">
-                <Heading size="md" mb={4} textAlign="center">Código QR</Heading>
-                <Center>
+          <div className="lg:col-span-2">
+            <div className="flex flex-col space-y-6">
+              <div className="bg-white p-6 rounded-lg shadow-md w-full">
+                <h2 className="text-lg font-bold mb-4 text-center">Código QR</h2>
+                <div className="flex justify-center">
                   <QRGenerator
                     value={generateCouponUrl(coupon.id)}
                     title={coupon.title}
                     size={240}
                   />
-                </Center>
-              </Box>
+                </div>
+              </div>
               
-              <Box bg="white" p={6} borderRadius="lg" shadow="md" w="full">
-                <Heading size="md" mb={4}>Acciones</Heading>
-                <VStack spacing={3}>
-                  <Button 
-                    colorScheme="blue" 
-                    w="full"
+              <div className="bg-white p-6 rounded-lg shadow-md w-full">
+                <h2 className="text-lg font-bold mb-4">Acciones</h2>
+                <div className="flex flex-col space-y-3">
+                  <button 
+                    className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-md"
                     onClick={() => navigate(`/redeem/${coupon.id}`)}
                   >
                     Ver cupón para clientes
-                  </Button>
-                </VStack>
-              </Box>
-            </VStack>
-          </GridItem>
-        </Grid>
-      </Container>
-    </Box>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

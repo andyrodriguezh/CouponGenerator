@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Box, Button, HStack, VStack, Text } from '@chakra-ui/react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { downloadQRCode, generateQRFilename } from '../../services/qrService';
 
@@ -29,8 +28,8 @@ const QRGenerator = ({
   };
   
   return (
-    <VStack spacing={4} align="center">
-      <Box ref={qrRef} p={4} bg="white" borderRadius="md" boxShadow="md">
+    <div className="flex flex-col items-center space-y-4">
+      <div ref={qrRef} className="p-4 bg-white rounded-md shadow-md">
         <QRCodeCanvas
           value={value}
           size={size}
@@ -39,30 +38,27 @@ const QRGenerator = ({
           level={level}
           includeMargin={includeMargin}
         />
-      </Box>
+      </div>
       
-      <Text fontSize="sm" color="gray.500">
+      <p className="text-sm text-gray-500">
         Escanea este código QR o descárgalo
-      </Text>
+      </p>
       
-      <HStack spacing={4}>
-        <Button 
-          colorScheme="blue" 
+      <div className="flex space-x-4">
+        <button 
+          className="px-3 py-1 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md"
           onClick={() => handleDownload('png')}
-          size="sm"
         >
           PNG
-        </Button>
-        <Button 
-          colorScheme="blue" 
-          variant="outline"
+        </button>
+        <button 
+          className="px-3 py-1 text-sm border border-primary-600 text-primary-600 hover:bg-primary-50 rounded-md"
           onClick={() => handleDownload('svg')}
-          size="sm"
         >
           SVG
-        </Button>
-      </HStack>
-    </VStack>
+        </button>
+      </div>
+    </div>
   );
 };
 

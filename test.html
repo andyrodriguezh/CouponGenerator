@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#e3f2fd',
+                            100: '#bbdefb',
+                            200: '#90caf9',
+                            300: '#64b5f6',
+                            400: '#42a5f5',
+                            500: '#2196f3',
+                            600: '#1e88e5',
+                            700: '#1976d2',
+                            800: '#1565c0',
+                            900: '#0d47a1',
+                        },
+                        secondary: {
+                            50: '#e8f5e9',
+                            100: '#c8e6c9',
+                            200: '#a5d6a7',
+                            300: '#81c784',
+                            400: '#66bb6a',
+                            500: '#4caf50',
+                            600: '#43a047',
+                            700: '#388e3c',
+                            800: '#2e7d32',
+                            900: '#1b5e20',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-8 max-w-md mx-auto">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-2xl font-bold text-primary-600 mb-4">
+                Prueba de Tailwind CSS
+            </h2>
+            <p class="text-gray-700 mb-4">
+                Este archivo HTML de prueba utiliza clases de Tailwind CSS para comprobar que los estilos
+                se aplican correctamente.
+            </p>
+            <div class="flex space-x-4 mt-6">
+                <button class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded">
+                    Botón Primario
+                </button>
+                <button class="bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded">
+                    Botón Secundario
+                </button>
+            </div>
+            <div class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-md text-yellow-800">
+                <p class="font-medium">Nota:</p>
+                <p class="text-sm">Si puedes ver este componente con los estilos aplicados, significa que Tailwind CSS está funcionando correctamente.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

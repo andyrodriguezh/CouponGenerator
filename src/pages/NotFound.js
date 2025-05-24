@@ -1,30 +1,27 @@
 import React from 'react';
-import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NotFound = () => {
   return (
-    <Container centerContent maxW="container.md" py={20}>
-      <VStack spacing={6} textAlign="center">
-        <Heading as="h1" size="4xl">404</Heading>
-        <Heading as="h2" size="xl">Página no encontrada</Heading>
+    <div className="container mx-auto max-w-2xl py-20 px-4">
+      <div className="flex flex-col items-center space-y-6 text-center">
+        <h1 className="text-6xl font-bold">404</h1>
+        <h2 className="text-3xl font-bold">Página no encontrada</h2>
         
-        <Text fontSize="lg">
+        <p className="text-lg">
           La página que estás buscando no existe o ha sido movida.
-        </Text>
+        </p>
         
-        <Box pt={6}>
-          <Button
-            as={RouterLink}
+        <div className="pt-6">
+          <Link
             to="/"
-            colorScheme="blue"
-            size="lg"
+            className="inline-flex px-6 py-3 text-white font-medium bg-blue-600 hover:bg-blue-700 rounded-md shadow-sm"
           >
             Volver al inicio
-          </Button>
-        </Box>
-      </VStack>
-    </Container>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
